@@ -17,11 +17,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 print(device)
 
+r = '[’!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~！。？，]+'
+stopwords = ['嗯', '啊', '哦', '的', '了', '吧', '呃', '呢', '噢', '呀', '嘛', '哎', '喂', '唉', '这个', '那个', '就', '那', '就是', '也',
+             '的话', '还']
 
 def format(text):
-    r = '[’!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~！。？，]+'
-    stopwords = ['嗯', '啊', '哦', '的', '了', '吧', '呃', '呢', '噢', '呀', '嘛', '哎', '喂', '唉', '这个', '那个', '就', '那', '就是', '也', '的话', '还']
-
     line1 = re.sub(r, '', text)
     list1 = list(jieba.cut(line1, cut_all=False))
     list1 = [w for w in list1 if w not in stopwords]
@@ -144,7 +144,7 @@ def cluster_db(inv_index, texts):
             outpath.write(text + '\t' + s + '\n')
         outpath.write('\n')
         sim_id = set(sim_id)
-        print(f'    共{len(candis_id)}条相似语句')
+        print(f'    共{len(sim_id)}条相似语句')
         cluster.update(sim_id)
         used.update(cluster)
         clusters[i] = cluster

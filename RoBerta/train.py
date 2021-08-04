@@ -13,6 +13,10 @@ from transformers import BertTokenizer
 from model import BertModel
 from transformers.optimization import AdamW
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+print(device)
+
 def main(train_file, dev_file, target_dir, 
          epochs=10,
          batch_size=32,
@@ -21,7 +25,6 @@ def main(train_file, dev_file, target_dir,
          max_grad_norm=10.0,
          checkpoint=None):
     bert_tokenizer = BertTokenizer.from_pretrained('hfl/chinese-roberta-wwm-ext', do_lower_case=True)
-    device = torch.device("cuda")
     print(20 * "=", " Preparing for training ", 20 * "=")
     # 保存模型的路径
     if not os.path.exists(target_dir):

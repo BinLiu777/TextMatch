@@ -39,4 +39,4 @@ def main(test_file, pretrained_file, batch_size=32):
 
 
 if __name__ == "__main__":
-    main("../data/senteval_cn/LCQMC/LCQMC.test.data", "models/best.pth.tar")
+    main("../data/senteval_cn/LCQMC/LCQMC.test.data", "models_internet/best.pth.tar")

@@ -23,7 +23,7 @@ class DataPrecessForSentence(Dataset):
         self.seqs, self.seq_masks, self.seq_segments, self.labels = self.get_input(LCQMC_file, text)
         
     def __len__(self):
-        return len(self.seqs)
+        return len(self.labels)
 
     def __getitem__(self, idx):
         return self.seqs[idx], self.seq_masks[idx], self.seq_segments[idx], self.labels[idx]
@@ -63,7 +63,7 @@ class DataPrecessForSentence(Dataset):
             length = len(file)
             sentences_1 = [text] * length
             sentences_2 = file
-            labels = None
+            labels = [-1] * length
         else:
             raise NotImplementedError
 
@@ -77,7 +77,7 @@ class DataPrecessForSentence(Dataset):
         seqs = [i[0] for i in result]
         seq_masks = [i[1] for i in result]
         seq_segments = [i[2] for i in result]
-        return torch.Tensor(seqs).type(torch.long), torch.Tensor(seq_masks).type(torch.long), torch.Tensor(seq_segments).type(torch.long), torch.Tensor(labels).type(torch.long) if labels!=None else labels
+        return torch.Tensor(seqs).type(torch.long), torch.Tensor(seq_masks).type(torch.long), torch.Tensor(seq_segments).type(torch.long), torch.Tensor(labels).type(torch.long)
     
     def trunate_and_pad(self, tokens_seq_1, tokens_seq_2):
         """

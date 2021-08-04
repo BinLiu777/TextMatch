@@ -67,6 +67,7 @@ def test(model, dataloader):
             batch_start = time.time()
             # Move input and output data to the GPU if one is used.
             seqs, masks, segments, labels = batch_seqs.to(device), batch_seq_masks.to(device), batch_seq_segments.to(device), batch_labels.to(device)
+            print(batch_labels[0])
             _, _, probabilities = model(seqs, masks, segments, labels)
             batch_time += time.time() - batch_start
             all_prob.extend(probabilities[:,1].cpu().numpy())

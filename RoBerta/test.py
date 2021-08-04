@@ -11,10 +11,15 @@ from transformers import BertTokenizer
 from model import BertModelTest
 from utils import test
 from data import DataPrecessForSentence
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+print(device)
+
 
 def main(test_file, pretrained_file, batch_size=32):
 
-    device = torch.device("cuda")
     bert_tokenizer = BertTokenizer.from_pretrained('models/vocabs.txt', do_lower_case=True)
     print(20 * "=", " Preparing for testing ", 20 * "=")
     if platform == "linux" or platform == "linux2":
@@ -34,4 +39,4 @@ def main(test_file, pretrained_file, batch_size=32):
 
 
 if __name__ == "__main__":
-    main("../data/LCQMC_test.csv", "models/best.pth.tar")
+    main("../data/senteval_cn/LCQMC/LCQMC.test.data", "models/best.pth.tar")

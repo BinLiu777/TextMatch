@@ -63,7 +63,7 @@ def test(model, dataloader):
     all_labels = []
     # Deactivate autograd for evaluation.
     with torch.no_grad():
-        for (batch_seqs, batch_seq_masks, batch_seq_segments, batch_labels) in dataloader:
+        for (batch_seqs, batch_seq_masks, batch_seq_segments, batch_labels) in tqdm(dataloader, desc='batch nums'):
             batch_start = time.time()
             # Move input and output data to the GPU if one is used.
             seqs, masks, segments, labels = batch_seqs.to(device), batch_seq_masks.to(device), batch_seq_segments.to(device), batch_labels.to(device)
@@ -72,8 +72,7 @@ def test(model, dataloader):
             _, _, probabilities = model(seqs, masks, segments, labels)
             batch_time += time.time() - batch_start
             batch_prob = probabilities[:,1].cpu().numpy()
-            print(batch_prob.shape)
-            stop
+            batch_prob = [1 if score > 0.5 else 0 for score in batch_prob]
             all_prob.extend(batch_prob)
             all_labels.extend(batch_labels)
     batch_time /= len(dataloader)
@@ -86,9 +85,7 @@ def classify(test_file, text, bert_tokenizer, model, batch_size=32):
     test_data = DataPrecessForSentence(bert_tokenizer, test_file, text)
     test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
 
-    batch_time, total_time, all_labels, all_prob = test(model, test_loader)
-    # print(all_prob)
-    print(len(all_prob))
+    _, _, _, all_prob = test(model, test_loader)
     return all_prob
 
 
@@ -108,10 +105,14 @@ def get_sim_sents(text, candis_id, texts, bert_tokenizer, model):
     sim_id = []
     candis_sents = [texts[i] for i in candis_id]
     predicts = classify(candis_sents, text, bert_tokenizer, model)
-    stop
-    if predict == 1:
-        sim_sents.append(sent)
-        sim_id.append(i)
+    print(predicts)
+    print(len(predicts))
+    for i in range(len(predicts)):
+        predict = predicts[i]
+        if predict == 1:
+            sim_sents.append(texts[i])
+            print(text, sim_sents)
+            sim_id.append(i)
     return sim_sents, sim_id
 
 
@@ -138,6 +139,7 @@ def cluster_db(inv_index, texts):
         candis_id = {i for i in candis_id if i not in used}
         print(f'    去除已处理，剩{len(candis_id)}条候选')
         _, sim_id = get_sim_sents(text, candis_id, texts, bert_tokenizer, model)
+        stop
         sim_id = set(sim_id)
         print(f'    共{len(candis_id)}条相似语句')
         cluster.update(sim_id)

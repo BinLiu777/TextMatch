@@ -71,7 +71,10 @@ def test(model, dataloader):
                 labels = None
             _, _, probabilities = model(seqs, masks, segments, labels)
             batch_time += time.time() - batch_start
-            all_prob.extend(probabilities[:,1].cpu().numpy())
+            batch_prob = probabilities[:,1].cpu().numpy()
+            print(batch_prob.shape)
+            stop
+            all_prob.extend(batch_prob)
             all_labels.extend(batch_labels)
     batch_time /= len(dataloader)
     total_time = time.time() - time_start

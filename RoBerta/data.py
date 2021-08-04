@@ -23,7 +23,7 @@ class DataPrecessForSentence(Dataset):
         self.seqs, self.seq_masks, self.seq_segments, self.labels = self.get_input(LCQMC_file, text)
         
     def __len__(self):
-        return len(self.labels)
+        return len(self.seqs)
 
     def __getitem__(self, idx):
         return self.seqs[idx], self.seq_masks[idx], self.seq_segments[idx], self.labels[idx]

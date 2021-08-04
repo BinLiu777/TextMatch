@@ -42,10 +42,22 @@ class DataPrecessForSentence(Dataset):
             seq_segment : shape等于seq，因为是单句，所以取值都为0。
             labels      : 标签取值为{0,1}，其中0表示负样本，1代表正样本。
         """
-        df = pd.read_csv(file)
-        sentences_1 = map(HanziConv.toSimplified, df['sentence1'].values)
-        sentences_2 = map(HanziConv.toSimplified, df['sentence2'].values)
-        labels = df['label'].values
+        # df = pd.read_csv(file)
+        # sentences_1 = map(HanziConv.toSimplified, df['sentence1'].values)
+        # sentences_2 = map(HanziConv.toSimplified, df['sentence2'].values)
+        # labels = df['label'].values
+        with open(file, 'r') as f:
+            lines = f.readlines()
+        sentences_1 = []
+        sentences_2 = []
+        labels = []
+        for line in lines:
+            sentence1, sentence2, label = line.strip().split('\t')
+            sentences_1.append(sentence1)
+            sentences_2.append(sentence2)
+            labels.append(label)
+        sentences_1 = map(HanziConv.toSimplified, sentences_1)
+        sentences_2 = map(HanziConv.toSimplified, sentences_2)
         # 切词
         tokens_seq_1 = list(map(self.bert_tokenizer.tokenize, sentences_1))
         tokens_seq_2 = list(map(self.bert_tokenizer.tokenize, sentences_2))

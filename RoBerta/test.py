@@ -13,7 +13,7 @@ from utils import test
 from data import DataPrecessForSentence
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 print(device)
 

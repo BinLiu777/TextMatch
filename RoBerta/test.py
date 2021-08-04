@@ -32,7 +32,7 @@ def main(test_file, pretrained_file, batch_size=32):
     test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
     print("\t* Building model...")
     model = BertModelTest().to(device)
-    model.load_state_dict(checkpoint["model"])
+    model.load_state_dict(checkpoint["model"], False)
     print(20 * "=", " Testing roberta model on device: {} ".format(device), 20 * "=")
     batch_time, total_time, accuracy, auc = test(model, test_loader)
     print("\n-> Average batch processing time: {:.4f}s, total test time: {:.4f}s, accuracy: {:.4f}%, auc: {:.4f}\n".format(batch_time, total_time, (accuracy*100), auc))

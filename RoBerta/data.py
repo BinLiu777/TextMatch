@@ -13,7 +13,7 @@ class DataPrecessForSentence(Dataset):
     """
     对文本进行处理
     """
-    def __init__(self, bert_tokenizer, LCQMC_file, text, max_char_len = 512):
+    def __init__(self, bert_tokenizer, LCQMC_file, text=None, max_char_len = 512):
         """
         bert_tokenizer :分词器
         LCQMC_file     :语料文件
@@ -63,7 +63,7 @@ class DataPrecessForSentence(Dataset):
             length = len(file)
             sentences_1 = [text] * length
             sentences_2 = file
-            labels = -1
+            labels = [-1] * length
         else:
             raise NotImplementedError
 

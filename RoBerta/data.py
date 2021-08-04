@@ -63,7 +63,7 @@ class DataPrecessForSentence(Dataset):
             length = len(file)
             sentences_1 = [text] * length
             sentences_2 = file
-            labels = [-1] * length
+            labels = None
         else:
             raise NotImplementedError
 

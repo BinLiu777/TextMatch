@@ -55,7 +55,7 @@ class DataPrecessForSentence(Dataset):
             sentence1, sentence2, label = line.strip().split('\t')
             sentences_1.append(sentence1)
             sentences_2.append(sentence2)
-            labels.append(label)
+            labels.append(int(label))
         sentences_1 = map(HanziConv.toSimplified, sentences_1)
         sentences_2 = map(HanziConv.toSimplified, sentences_2)
         # 切词

@@ -77,7 +77,7 @@ class DataPrecessForSentence(Dataset):
         seqs = [i[0] for i in result]
         seq_masks = [i[1] for i in result]
         seq_segments = [i[2] for i in result]
-        return torch.Tensor(seqs).type(torch.long), torch.Tensor(seq_masks).type(torch.long), torch.Tensor(seq_segments).type(torch.long), torch.Tensor(labels).type(torch.long)
+        return torch.Tensor(seqs).type(torch.long), torch.Tensor(seq_masks).type(torch.long), torch.Tensor(seq_segments).type(torch.long), torch.Tensor(labels).type(torch.long) if labels!=None else labels
     
     def trunate_and_pad(self, tokens_seq_1, tokens_seq_2):
         """

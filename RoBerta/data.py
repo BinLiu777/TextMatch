@@ -29,7 +29,7 @@ class DataPrecessForSentence(Dataset):
         return self.seqs[idx], self.seq_masks[idx], self.seq_segments[idx], self.labels[idx]
         
     # 获取文本与标签
-    def get_input(self, file):
+    def get_input(self, file, text=None):
         """
         通对输入文本进行分词、ID化、截断、填充等流程得到最终的可用于模型输入的序列。
         入参:
@@ -46,16 +46,27 @@ class DataPrecessForSentence(Dataset):
         # sentences_1 = map(HanziConv.toSimplified, df['sentence1'].values)
         # sentences_2 = map(HanziConv.toSimplified, df['sentence2'].values)
         # labels = df['label'].values
-        with open(file, 'r') as f:
-            lines = f.readlines()
-        sentences_1 = []
-        sentences_2 = []
-        labels = []
-        for line in lines:
-            sentence1, sentence2, label = line.strip().split('\t')
-            sentences_1.append(sentence1)
-            sentences_2.append(sentence2)
-            labels.append(int(label))
+        if type(file) == str:
+            assert text == None
+            with open(file, 'r') as f:
+                lines = f.readlines()
+            sentences_1 = []
+            sentences_2 = []
+            labels = []
+            for line in lines:
+                sentence1, sentence2, label = line.strip().split('\t')
+                sentences_1.append(sentence1)
+                sentences_2.append(sentence2)
+                labels.append(int(label))
+        elif type(file) == list:
+            assert type(text) == str
+            length = len(file)
+            sentences_1 = [text] * length
+            sentences_2 = file
+            labels = -1
+        else:
+            raise NotImplementedError
+
         sentences_1 = map(HanziConv.toSimplified, sentences_1)
         sentences_2 = map(HanziConv.toSimplified, sentences_2)
         # 切词

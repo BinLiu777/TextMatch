@@ -105,13 +105,13 @@ def get_sim_sents(text, candis_id, texts, bert_tokenizer, model):
     sim_id = []
     candis_sents = [texts[i] for i in candis_id]
     predicts = classify(candis_sents, text, bert_tokenizer, model)
-    print(predicts)
+    # print(predicts)
     print(len(predicts))
     for i in range(len(predicts)):
         predict = predicts[i]
         if predict == 1:
             sim_sents.append(texts[i])
-            print(text, sim_sents)
+            print(text, texts[i])
             sim_id.append(i)
     return sim_sents, sim_id
 

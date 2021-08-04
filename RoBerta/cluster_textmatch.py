@@ -103,7 +103,14 @@ def init_model(pretrained_file):
 def get_sim_sents(text, candis_id, texts, bert_tokenizer, model):
     sim_sents = []
     sim_id = []
+
     candis_sents = [texts[i] for i in candis_id]
+    for j in range(len(candis_sents)):
+        t = candis_sents[j]
+        text_list = list(jieba.cut(t, cut_all=False))
+        text_list = [w for w in text_list if w not in stopwords]
+        candis_sents[j] = ''.join(text_list)
+
     predicts = classify(candis_sents, text, bert_tokenizer, model)
     # print(predicts)
     # print(len(predicts))
@@ -134,7 +141,12 @@ def cluster_db(inv_index, texts):
         print(f'处理句子{i}， 已处理{len(used)}，未处理{len(texts) - len(used)}')
         cluster = set()
         cluster.add(i)
+
         text = texts[i]
+        text_list = list(jieba.cut(text, cut_all=False))
+        text_list = [w for w in text_list if w not in stopwords]
+        text = ''.join(text_list)
+
         _, candis_id = get_candis(text, inv_index, texts)
         print(f'    共{len(candis_id)}条候选')
         candis_id = {i for i in candis_id if i not in used}

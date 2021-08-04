@@ -20,7 +20,7 @@ print(device)
 
 def main(test_file, pretrained_file, batch_size=32):
 
-    bert_tokenizer = BertTokenizer.from_pretrained('models/vocabs.txt', do_lower_case=True)
+    bert_tokenizer = BertTokenizer.from_pretrained('models_internet/vocabs.txt', do_lower_case=True)
     print(20 * "=", " Preparing for testing ", 20 * "=")
     if platform == "linux" or platform == "linux2":
         checkpoint = torch.load(pretrained_file)

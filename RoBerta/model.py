@@ -26,7 +26,7 @@ class BertModel(nn.Module):
 class BertModelTest(nn.Module):
     def __init__(self):
         super(BertModelTest, self).__init__()
-        config = BertConfig.from_pretrained('models/config.json')
+        config = BertConfig.from_pretrained('models_internet/config.json')
         self.bert = BertForSequenceClassification(config)  # /bert_pretrain/
         self.device = torch.device("cuda")
 

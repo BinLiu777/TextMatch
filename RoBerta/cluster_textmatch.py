@@ -78,7 +78,7 @@ def test(model, dataloader):
 
 def classify(test_file, text, bert_tokenizer, model, batch_size=32):
 
-    test_data = DataPrecessForSentence(bert_tokenizer, test_file)
+    test_data = DataPrecessForSentence(bert_tokenizer, test_file, text)
     test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
 
     batch_time, total_time, all_labels, all_prob = test(model, test_loader)

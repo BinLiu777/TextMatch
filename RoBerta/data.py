@@ -13,14 +13,14 @@ class DataPrecessForSentence(Dataset):
     """
     对文本进行处理
     """
-    def __init__(self, bert_tokenizer, LCQMC_file, max_char_len = 103):
+    def __init__(self, bert_tokenizer, LCQMC_file, text, max_char_len = 512):
         """
         bert_tokenizer :分词器
         LCQMC_file     :语料文件
         """
         self.bert_tokenizer = bert_tokenizer
         self.max_seq_len = max_char_len
-        self.seqs, self.seq_masks, self.seq_segments, self.labels = self.get_input(LCQMC_file)
+        self.seqs, self.seq_masks, self.seq_segments, self.labels = self.get_input(LCQMC_file, text)
         
     def __len__(self):
         return len(self.labels)

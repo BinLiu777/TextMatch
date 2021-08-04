@@ -87,7 +87,7 @@ def classify(test_file, text, bert_tokenizer, model, batch_size=32):
     test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
 
     batch_time, total_time, all_labels, all_prob = test(model, test_loader)
-    print(all_prob)
+    # print(all_prob)
     print(len(all_prob))
     return all_prob
 

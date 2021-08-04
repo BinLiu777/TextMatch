@@ -13,7 +13,7 @@ from data import DataPrecessForSentence
 import os
 import time
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 print(device)
 
@@ -106,12 +106,12 @@ def get_sim_sents(text, candis_id, texts, bert_tokenizer, model):
     candis_sents = [texts[i] for i in candis_id]
     predicts = classify(candis_sents, text, bert_tokenizer, model)
     # print(predicts)
-    print(len(predicts))
+    # print(len(predicts))
     for i in range(len(predicts)):
         predict = predicts[i]
         if predict == 1:
             sim_sents.append(texts[i])
-            print(text, texts[i])
+            # print(text, texts[i])
             sim_id.append(i)
     return sim_sents, sim_id
 
@@ -126,6 +126,7 @@ def cluster_db(inv_index, texts):
     bert_tokenizer, model = init_model("models_internet/best.pth.tar")
     clusters = defaultdict(set)
     used = set()
+    outpath = open('sim_sents.txt', 'w')
     for i in range(len(texts)):
         if i in used:
             print(f'已处理，跳过句子{i}')
@@ -138,8 +139,10 @@ def cluster_db(inv_index, texts):
         print(f'    共{len(candis_id)}条候选')
         candis_id = {i for i in candis_id if i not in used}
         print(f'    去除已处理，剩{len(candis_id)}条候选')
-        _, sim_id = get_sim_sents(text, candis_id, texts, bert_tokenizer, model)
-        stop
+        sim_sents, sim_id = get_sim_sents(text, candis_id, texts, bert_tokenizer, model)
+        for s in sim_sents:
+            outpath.write(text + '\t' + s + '\n')
+        outpath.write('\n')
         sim_id = set(sim_id)
         print(f'    共{len(candis_id)}条相似语句')
         cluster.update(sim_id)

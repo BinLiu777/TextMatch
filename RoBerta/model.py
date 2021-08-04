@@ -31,7 +31,10 @@ class BertModelTest(nn.Module):
         self.device = torch.device("cuda")
 
     def forward(self, batch_seqs, batch_seq_masks, batch_seq_segments, labels):
-        loss, logits = self.bert(input_ids = batch_seqs, attention_mask = batch_seq_masks, 
-                              token_type_ids=batch_seq_segments, labels = labels)[:2]
+        # loss, logits = self.bert(input_ids = batch_seqs, attention_mask = batch_seq_masks,
+        #                       token_type_ids=batch_seq_segments, labels = labels)[:2]
+        res = self.bert(input_ids = batch_seqs, attention_mask = batch_seq_masks,
+                              token_type_ids=batch_seq_segments, labels = labels)
+        print(res)
         probabilities = nn.functional.softmax(logits, dim=-1)
         return loss, logits, probabilities

@@ -152,7 +152,7 @@ def cluster_db(inv_index, texts):
 if __name__ == '__main__':
 
     flag = 1
-    inv_index, texts = gene_db('data/pure_user_texts.txt')
+    inv_index, texts = gene_db('../data/pure_user_texts.txt')
 
     if flag == 0:
         text = '哦哦你你这个啥什么户的。'
